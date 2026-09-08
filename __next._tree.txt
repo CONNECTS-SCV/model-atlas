@@ -1,0 +1,2 @@
+:HL["/model-atlas/_next/static/css/cbca4fa7217f7a8d.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":4176,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":4256,"slots":null}}},"staleTime":300,"buildId":"fXQJjutVW3L37lDi9qWh9"}
