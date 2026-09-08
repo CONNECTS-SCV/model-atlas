@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 const url=process.env.STATIC_BASE_URL||'http://127.0.0.1:4173/model-atlas/';
 test('Pages serves catalog, search, detail, comparison and persisted favorites without API server',async({page})=>{
  const errors:string[]=[];const apiCalls:string[]=[];page.on('pageerror',e=>errors.push(e.message));page.on('request',r=>{if(new URL(r.url()).pathname.startsWith('/api/'))apiCalls.push(r.url());});
- await page.goto(url);await expect(page.locator('.model-link')).toHaveCount(30);await expect(page.locator('.compact-stats')).toContainText('647');
+ await page.goto(url);await expect(page.locator('.model-link')).toHaveCount(30);await expect(page.locator('.compact-stats')).toContainText('모델');
  await page.getByRole('textbox',{name:'모델 검색'}).fill('Germinal');await expect(page.locator('.model-link')).toHaveCount(2);
  await page.locator('.model-link').filter({hasText:'OpenGerminal'}).click();await expect(page.getByRole('dialog')).toContainText('원문 출처');await page.getByRole('button',{name:'상세 닫기'}).click();
  for(let i=0;i<2;i++)await page.locator('input[aria-label$="비교 선택"]').nth(i).check();await page.locator('.compare-tray').getByRole('button',{name:'모델 비교'}).click();await expect(page.locator('.compare-name')).toHaveCount(2);
