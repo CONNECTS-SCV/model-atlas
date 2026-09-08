@@ -1,0 +1,158 @@
+# De novo and generative design - 30 entries
+#
+# HAND-MAINTAINED FILE. Add entries with:
+#     python3 tools/add_entry.py --json new_entries.json
+# which fills identifiers from public sources, validates against
+# schemas/method.schema.json, and regenerates the generated views.
+#
+# Field semantics: schemas/method.schema.json
+# Route and tag vocabularies: schemas/taxonomy.yaml, schemas/keywords.yaml
+- id: abdesign
+  name: AbDesign
+  route: generative_design
+  year: 2025
+  venue: mAbs
+  venue_type: journal
+  paper:
+    title: 'AbDesign: database of point mutants of antibodies with associated structures reveals
+      poor generalization of binding predictions from machine learning models'
+    doi: 10.1080/19420862.2025.2567319
+    biorxiv: 2025.06.09.658639
+  code:
+    status: unknown
+    license: null
+  tags:
+  - antibody
+  - benchmark
+  - review
+  - de_novo_design
+  keywords:
+  - antibody design method evaluation
+  - generative model comparison
+  - reproducibility of reported metrics
+  - mabs review
+  verified:
+    'on': '2026-08-13'
+    doi_source: crossref
+    license_source: unverified
+- id: abdiffuser
+  name: AbDiffuser
+  route: generative_design
+  year: 2023
+  venue: NeurIPS
+  venue_type: conference
+  paper:
+    title: 'AbDiffuser: full-atom generation of in-vitro functioning antibodies'
+    doi: 10.52202/075280-1774
+    arxiv: '2308.05027'
+  code:
+    status: none
+    license: null
+  tags:
+  - antibody
+  - denoising_diffusion
+  - de_novo_design
+  - no_code
+  keywords:
+  - aligned protein mixer architecture
+  - projection onto informed structural priors
+  - full atom side chain generation
+  - sequence length changes handled by alignment
+  - her2 binders expressed and measured
+  verified:
+    'on': '2026-08-14'
+    doi_source: crossref
+    license_source: none_found
+- id: abegdiffuser
+  name: AbEgDiffuser
+  route: generative_design
+  year: 2025
+  venue: Journal of Chemical Theory and Computation
+  venue_type: journal
+  paper:
+    title: 'AbEgDiffuser: Antibody Sequence-Structure Codesign with Equivariant Graph Neural Networks
+      and Diffusion Models'
+    doi: 10.1021/acs.jctc.5c00990
+  code:
+    status: open
+    url: https://github.com/ShiLab-GitHub/AbEgDiffuser
+    license: null
+  weights:
+    status: open
+    url: https://doi.org/10.5281/zenodo.15512361
+  tags:
+  - antibody
+  - diffusion_model
+  - equivariant_network
+  - de_novo_design
+  - cdr_loop_modelling
+  keywords:
+  - abegdiffuser
+  - equivariant graph diffusion
+  - cdr generation
+  - sabdab
+  - amino acid recovery
+  verified:
+    'on': '2026-08-13'
+    doi_source: crossref
+    license_source: none_found
+- id: abmpnn
+  name: AbMPNN
+  route: generative_design
+  year: 2023
+  venue: arXiv
+  venue_type: preprint
+  paper:
+    title: Inverse folding for antibody sequence design using deep learning
+    arxiv: '2310.19513'
+  code:
+    status: none
+    license: null
+  tags:
+  - antibody
+  - inverse_folding
+  - graph_neural_network
+  - de_novo_design
+  - cdr_loop_modelling
+  - no_code
+  keywords:
+  - antibody specific inverse folding model
+  - fine-tuned from a message passing design network
+  - structure conditioned cdr redesign
+  - native sequence recovery in cdrs
+  - predicted and solved fv structures as input
+  verified:
+    'on': '2026-08-14'
+    doi_source: arxiv
+    license_source: none_found
+- id: absci_her2_de_novo
+  name: Absci HER2 De Novo
+  route: generative_design
+  year: 2023
+  venue: bioRxiv
+  venue_type: preprint
+  paper:
+    title: Unlocking de novo antibody design with generative artificial intelligence
+    doi: 10.1101/2023.01.08.523187
+    biorxiv: 2023.01.08.523187
+  code:
+    status: partial
+    url: https://github.com/AbSciBio/unlocking-de-novo-antibody-design
+    license: BSD-3-Clause
+    license_url: https://github.com/AbSciBio/unlocking-de-novo-antibody-design/blob/HEAD/LICENSE
+  tags:
+  - antibody
+  - antigen
+  - de_novo_design
+  - high_throughput_screening
+  - zero_shot_scoring
+  keywords:
+  - absci
+  - de novo her2 binders
+  - zero-shot generative design
+  - acoustic droplet ejection screening
+  - sequence to affinity
+  verified:
+    'on': '2026-08-13'
+    doi_source: crossref
+    license_source: repository_license_file

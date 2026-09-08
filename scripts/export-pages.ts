@@ -1,0 +1,9 @@
+import {mkdir,writeFile,rm} from 'node:fs/promises';import {catalog,overview,modelDetail} from '../src/lib/catalog';import {pool} from '../src/lib/db';
+const version=new Date().toISOString().replace(/[^0-9]/g,'');const root=`public/data/${version}`;await rm('public/data',{recursive:true,force:true});await mkdir(root+'/models',{recursive:true});
+const rows:any[]=[];for(let page=1;;page++){const result=await catalog(new URLSearchParams({kind:'all',lifecycle:'all',limit:'100',page:String(page)}));rows.push(...result.rows);if(rows.length>=result.total)break;}
+const sourceMap=(await pool.query("SELECT model_id,array_agg(DISTINCT source_id) ids FROM source_entries WHERE status='active' GROUP BY model_id")).rows;
+for(const row of rows)row.source_ids=sourceMap.find(x=>x.model_id===row.id)?.ids||[];
+const o=await overview();o.worker=null;const nextRun=new Date();nextRun.setUTCMinutes(17,0,0);nextRun.setUTCHours(Math.floor(nextRun.getUTCHours()/6)*6);if(nextRun.getTime()<=Date.now())nextRun.setUTCHours(nextRun.getUTCHours()+6);for(const source of o.sources)source.next_run=nextRun.toISOString();const published={...o,deployment:{mode:'github-pages',published_at:new Date().toISOString(),actions_url:'https://github.com/CONNECTS-SCV/model-atlas/actions/workflows/pages.yml'}};
+await writeFile(root+'/catalog.json',JSON.stringify(rows));await writeFile(root+'/overview.json',JSON.stringify(published));
+let next=0;await Promise.all(Array.from({length:3},async()=>{while(next<rows.length){const row=rows[next++];const detail=await modelDetail(row.id);await writeFile(root+`/models/${row.id}.json`,JSON.stringify(detail));}}));
+await writeFile('public/data/manifest.json',JSON.stringify({version,published_at:published.deployment.published_at}));console.log(JSON.stringify({exported:rows.length,models:o.counts.models,version}));await pool.end();

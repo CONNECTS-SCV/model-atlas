@@ -1,0 +1,3 @@
+import {pool} from '../src/lib/db';import {syncSource} from '../src/lib/sync';import {enrichBatch} from '../src/lib/enrich';import {seedDocumentQueue,enrichDocuments} from '../src/lib/documents';
+for(const s of (await pool.query('SELECT id FROM sources WHERE enabled ORDER BY id')).rows)await syncSource(s.id);
+await pool.query("UPDATE enrichment_jobs SET status='queued' WHERE status='running' AND next_run<now()");await pool.query("UPDATE document_jobs SET status='queued' WHERE status='running' AND next_run<now()");await enrichBatch(250);await seedDocumentQueue();await enrichDocuments(100);await pool.end();

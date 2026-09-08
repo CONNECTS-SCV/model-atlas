@@ -1,0 +1,53 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: curieus_atlas
+      POSTGRES_USER: atlas
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+    volumes:
+      - atlas_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U atlas -d curieus_atlas]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+  migrate:
+    build:
+      context: .
+      target: worker
+    environment:
+      DATABASE_URL: postgresql://atlas:${POSTGRES_PASSWORD}@db:5432/curieus_atlas
+    command: [npm, run, 'db:migrate']
+    depends_on:
+      db:
+        condition: service_healthy
+  web:
+    build:
+      context: .
+      target: web
+    environment:
+      DATABASE_URL: postgresql://atlas:${POSTGRES_PASSWORD}@db:5432/curieus_atlas
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?Set ADMIN_TOKEN}
+    ports:
+      - '3000:3000'
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+  worker:
+    build:
+      context: .
+      target: worker
+    environment:
+      DATABASE_URL: postgresql://atlas:${POSTGRES_PASSWORD}@db:5432/curieus_atlas
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
+      SYNC_INTERVAL_HOURS: 6
+      ENRICH_BATCH_SIZE: 5
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+volumes:
+  atlas_data:
